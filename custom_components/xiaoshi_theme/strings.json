@@ -1,0 +1,24 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "消逝主题",
+        "description": "选择要添加的主题类型",
+        "data": {
+          "integration_type": "主题类型"
+        }
+      },
+      "location_source": {
+        "title": "选择位置源",
+        "description": "为{integration_type}选择位置源",
+        "data": {
+          "location_source_id": "位置源"
+        }
+      }
+    },
+    "abort": {
+      "pad_theme_already_exists": "平板主题已存在，只能添加一次",
+      "no_location_sources": "没有找到可用的位置源（zone或device_tracker）"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "domain": "xiaoshi_theme",
+  "name": "消逝主题",
+  "documentation": "https://github.com/custom_components/xiaoshi_theme",
+  "dependencies": [],
+  "codeowners": [],
+  "requirements": ["astral>=2.2"],
+  "config_flow": true,
+  "version": "1.0.0",
+  "iot_class": "local_polling"
+}
