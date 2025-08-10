@@ -5,7 +5,7 @@ from typing import Any, Dict, Optional
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.entity import EntityCategory, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -90,6 +90,12 @@ class XiaoshiThemePadFullSwitch(XiaoshiThemeBaseSwitch):
         self._attr_unique_id = f"{config_entry.entry_id}_pad_full"
         self._attr_name = "平板端全屏切换"
         self.entity_id = SWITCH_THEME_PAD_FULL
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, f"xiaoshi_theme_{config_entry.entry_id}")},
+            name="消逝主题-平板",
+            manufacturer="Xiaoshi Theme Integration",
+            model="Xiaoshi Theme Switch",
+        )
 
 
 class XiaoshiThemePadModeSwitch(XiaoshiThemeBaseSwitch):
@@ -101,6 +107,12 @@ class XiaoshiThemePadModeSwitch(XiaoshiThemeBaseSwitch):
         self._attr_unique_id = f"{config_entry.entry_id}_pad_mode"
         self._attr_name = "平板端模式启用"
         self.entity_id = SWITCH_THEME_PAD_MODE
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, f"xiaoshi_theme_{config_entry.entry_id}")},
+            name="消逝主题-平板",
+            manufacturer="Xiaoshi Theme Integration",
+            model="Xiaoshi Theme Switch",
+        )
 
 
 class XiaoshiThemePadHueSwitch(XiaoshiThemeBaseSwitch):
@@ -112,6 +124,12 @@ class XiaoshiThemePadHueSwitch(XiaoshiThemeBaseSwitch):
         self._attr_unique_id = f"{config_entry.entry_id}_pad_hue"
         self._attr_name = "平板端色相启用"
         self.entity_id = SWITCH_THEME_PAD_HUE
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, f"xiaoshi_theme_{config_entry.entry_id}")},
+            name="消逝主题-平板",
+            manufacturer="Xiaoshi Theme Integration",
+            model="Xiaoshi Theme Switch",
+        )
 
 
 class XiaoshiThemePhoneFullSwitch(XiaoshiThemeBaseSwitch):
@@ -122,6 +140,12 @@ class XiaoshiThemePhoneFullSwitch(XiaoshiThemeBaseSwitch):
         super().__init__(hass, config_entry)
         self._attr_unique_id = f"{config_entry.entry_id}_phone_full"
         self._attr_name = f"手机端全屏切换-{device_name}"
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, f"xiaoshi_theme_{config_entry.entry_id}")},
+            name="消逝主题-手机",
+            manufacturer="Xiaoshi Theme Integration",
+            model="Xiaoshi Theme Number",
+        )
         
         # 获取已有的手机主题数量，用于生成实体ID
         count = self._get_phone_theme_count()
@@ -143,6 +167,12 @@ class XiaoshiThemePhoneModeSwitch(XiaoshiThemeBaseSwitch):
         super().__init__(hass, config_entry)
         self._attr_unique_id = f"{config_entry.entry_id}_phone_mode"
         self._attr_name = f"手机端模式启用-{device_name}"
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, f"xiaoshi_theme_{config_entry.entry_id}")},
+            name="消逝主题-手机",
+            manufacturer="Xiaoshi Theme Integration",
+            model="Xiaoshi Theme Number",
+        )
         
         # 获取已有的手机主题数量，用于生成实体ID
         count = self._get_phone_theme_count()
