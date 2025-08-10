@@ -6,6 +6,7 @@ from homeassistant.components.select import SelectEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.entity import DeviceInfo
 
 from .const import (
     DOMAIN,
@@ -48,6 +49,12 @@ class XiaoshiThemePadModeSelect(SelectEntity):
         self._attr_unique_id = f"{config_entry.entry_id}_pad_mode_select"
         self._attr_name = "平板端模式"
         self._attr_options = PAD_MODE_OPTIONS
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, f"xiaoshi_theme_{config_entry.entry_id}")},
+            name="消逝主题-平板",
+            manufacturer="Xiaoshi Theme Integration",
+            model="Xiaoshi Theme Select",
+        )
         self._attr_current_option = PAD_MODE_COLOR
         self.entity_id = SELECT_THEME_PAD_MODE
 
