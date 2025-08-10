@@ -26,12 +26,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
-    # 如果是第一个条目，设置协调器
-    if len([k for k in hass.data[DOMAIN].keys() if k not in ["update_remove", "hue_update_remove"]]) == 1:
-        _LOGGER.info("设置消逝主题协调器")
-        await async_setup_coordinator(hass)
-    else:
-        _LOGGER.info("已存在消逝主题协调器，跳过设置")
+    # 无论是否是第一个条目，都重新设置协调器
+    _LOGGER.info("设置消逝主题协调器")
+    await async_setup_coordinator(hass)
 
     return True
 
@@ -65,6 +62,17 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """重新加载配置条目."""
     _LOGGER.info("重新加载消逝主题集成")
+    
+    # 清理定时任务
+    if "update_remove" in hass.data[DOMAIN]:
+        _LOGGER.info("移除主题更新定时任务")
+        hass.data[DOMAIN]["update_remove"]()
+        hass.data[DOMAIN].pop("update_remove")
+    
+    if "hue_update_remove" in hass.data[DOMAIN]:
+        _LOGGER.info("移除色相更新定时任务")
+        hass.data[DOMAIN]["hue_update_remove"]()
+        hass.data[DOMAIN].pop("hue_update_remove")
     
     # 先卸载
     await async_unload_entry(hass, entry)
