@@ -6,6 +6,7 @@ from homeassistant.components.number import NumberEntity, NumberMode
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.entity import DeviceInfo
 
 from .const import (
     DOMAIN,
@@ -49,6 +50,19 @@ async def async_setup_entry(
 class XiaoshiThemePadHueNumber(NumberEntity):
     """平板端色相数值."""
 
+    def __init__(self, hass: HomeAssistant, config_entry: ConfigEntry) -> None:
+        """初始化平板端色相数值."""
+        self.hass = hass
+        self.config_entry = config_entry
+        self._attr_unique_id = f"{config_entry.entry_id}_pad_hue"
+        self._attr_name = "平板端色相"
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, f"xiaoshi_theme_{config_entry.entry_id}")},
+            name="消逝主题-平板",
+            manufacturer="Xiaoshi Theme Integration",
+            model="Xiaoshi Theme Number",
+        )
+
     _attr_has_entity_name = True
     _attr_should_poll = False
     _attr_native_min_value = 1
@@ -62,6 +76,12 @@ class XiaoshiThemePadHueNumber(NumberEntity):
         self.config_entry = config_entry
         self._attr_unique_id = f"{config_entry.entry_id}_pad_hue_number"
         self._attr_name = "平板端色相"
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, f"xiaoshi_theme_{config_entry.entry_id}")},
+            name="消逝主题-平板",
+            manufacturer="Xiaoshi Theme Integration",
+            model="Xiaoshi Theme Number",
+        )
         self._attr_native_value = 1
         self.entity_id = NUMBER_THEME_PAD_HUE
 
@@ -73,6 +93,19 @@ class XiaoshiThemePadHueNumber(NumberEntity):
 
 class XiaoshiThemePhoneModeNumber(NumberEntity):
     """手机端模式数值."""
+
+    def __init__(self, hass: HomeAssistant, config_entry: ConfigEntry, device_name: str) -> None:
+        """初始化手机端模式数值."""
+        self.hass = hass
+        self.config_entry = config_entry
+        self._attr_unique_id = f"{config_entry.entry_id}_phone_mode"
+        self._attr_name = f"手机端模式-{device_name}"
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, f"xiaoshi_theme_{config_entry.entry_id}")},
+            name="消逝主题-手机",
+            manufacturer="Xiaoshi Theme Integration",
+            model="Xiaoshi Theme Number",
+        )
 
     _attr_has_entity_name = True
     _attr_should_poll = False
@@ -87,6 +120,12 @@ class XiaoshiThemePhoneModeNumber(NumberEntity):
         self.config_entry = config_entry
         self._attr_unique_id = f"{config_entry.entry_id}_phone_mode_number"
         self._attr_name = f"手机端模式-{device_name}"
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, f"xiaoshi_theme_{config_entry.entry_id}")},
+            name="消逝主题-手机",
+            manufacturer="Xiaoshi Theme Integration",
+            model="Xiaoshi Theme Number",
+        )
         self._attr_native_value = 1
         
         # 获取已有的手机主题数量，用于生成实体ID
