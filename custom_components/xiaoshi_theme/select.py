@@ -7,6 +7,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers.restore_state import RestoreEntity
 
 from .const import (
     DOMAIN,
@@ -36,7 +37,7 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-class XiaoshiThemePadModeSelect(SelectEntity):
+class XiaoshiThemePadModeSelect(SelectEntity, RestoreEntity):
     """平板端模式选择器."""
 
     _attr_has_entity_name = True
@@ -57,6 +58,16 @@ class XiaoshiThemePadModeSelect(SelectEntity):
         )
         self._attr_current_option = PAD_MODE_COLOR
         self.entity_id = SELECT_THEME_PAD_MODE
+        
+    async def async_added_to_hass(self) -> None:
+        """当实体被添加到 HA 时调用."""
+        await super().async_added_to_hass()
+        
+        # 尝试恢复之前的状态
+        last_state = await self.async_get_last_state()
+        if last_state and last_state.state in PAD_MODE_OPTIONS:
+            self._attr_current_option = last_state.state
+            _LOGGER.debug(f"恢复 {self.entity_id} 的状态为: {self._attr_current_option}")
 
     async def async_select_option(self, option: str) -> None:
         """更改选项."""
