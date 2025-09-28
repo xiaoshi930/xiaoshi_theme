@@ -7,6 +7,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers.restore_state import RestoreEntity
 
 from .const import (
     DOMAIN,
@@ -47,7 +48,7 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-class XiaoshiThemePadHueNumber(NumberEntity):
+class XiaoshiThemePadHueNumber(NumberEntity, RestoreEntity):
     """平板端色相数值."""
 
     def __init__(self, hass: HomeAssistant, config_entry: ConfigEntry) -> None:
@@ -85,13 +86,41 @@ class XiaoshiThemePadHueNumber(NumberEntity):
         self._attr_native_value = 1
         self.entity_id = NUMBER_THEME_PAD_HUE
 
+    async def async_added_to_hass(self) -> None:
+        """当实体被添加到 HA 时调用."""
+        await super().async_added_to_hass()
+        
+        # 尝试恢复之前的状态
+        last_state = await self.async_get_last_state()
+        if last_state and last_state.state not in (None, "unknown", "unavailable"):
+            try:
+                restored_value = float(last_state.state)
+                self._attr_native_value = int(restored_value)
+                _LOGGER.debug(f"恢复 {self.entity_id} 的状态为: {self._attr_native_value}")
+            except (ValueError, TypeError) as ex:
+                _LOGGER.warning(f"无法恢复 {self.entity_id} 的状态: {ex}")
+    
+    async def async_added_to_hass(self) -> None:
+        """当实体被添加到 HA 时调用."""
+        await super().async_added_to_hass()
+        
+        # 尝试恢复之前的状态
+        last_state = await self.async_get_last_state()
+        if last_state and last_state.state not in (None, "unknown", "unavailable"):
+            try:
+                restored_value = float(last_state.state)
+                self._attr_native_value = int(restored_value)
+                _LOGGER.debug(f"恢复 {self.entity_id} 的状态为: {self._attr_native_value}")
+            except (ValueError, TypeError) as ex:
+                _LOGGER.warning(f"无法恢复 {self.entity_id} 的状态: {ex}")
+    
     async def async_set_native_value(self, value: float) -> None:
         """设置数值."""
         self._attr_native_value = int(value)
         self.async_write_ha_state()
 
 
-class XiaoshiThemePhoneModeNumber(NumberEntity):
+class XiaoshiThemePhoneModeNumber(NumberEntity, RestoreEntity):
     """手机端模式数值."""
 
     def __init__(self, hass: HomeAssistant, config_entry: ConfigEntry, device_name: str) -> None:
@@ -139,6 +168,34 @@ class XiaoshiThemePhoneModeNumber(NumberEntity):
             count += 1
         return count
 
+    async def async_added_to_hass(self) -> None:
+        """当实体被添加到 HA 时调用."""
+        await super().async_added_to_hass()
+        
+        # 尝试恢复之前的状态
+        last_state = await self.async_get_last_state()
+        if last_state and last_state.state not in (None, "unknown", "unavailable"):
+            try:
+                restored_value = float(last_state.state)
+                self._attr_native_value = int(restored_value)
+                _LOGGER.debug(f"恢复 {self.entity_id} 的状态为: {self._attr_native_value}")
+            except (ValueError, TypeError) as ex:
+                _LOGGER.warning(f"无法恢复 {self.entity_id} 的状态: {ex}")
+    
+    async def async_added_to_hass(self) -> None:
+        """当实体被添加到 HA 时调用."""
+        await super().async_added_to_hass()
+        
+        # 尝试恢复之前的状态
+        last_state = await self.async_get_last_state()
+        if last_state and last_state.state not in (None, "unknown", "unavailable"):
+            try:
+                restored_value = float(last_state.state)
+                self._attr_native_value = int(restored_value)
+                _LOGGER.debug(f"恢复 {self.entity_id} 的状态为: {self._attr_native_value}")
+            except (ValueError, TypeError) as ex:
+                _LOGGER.warning(f"无法恢复 {self.entity_id} 的状态: {ex}")
+    
     async def async_set_native_value(self, value: float) -> None:
         """设置数值."""
         self._attr_native_value = int(value)
