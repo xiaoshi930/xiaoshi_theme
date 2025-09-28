@@ -8,6 +8,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.helpers.restore_state import RestoreEntity
 
 from .const import (
     DOMAIN,
@@ -58,7 +59,7 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-class XiaoshiThemeBaseSwitch(SwitchEntity):
+class XiaoshiThemeBaseSwitch(SwitchEntity, RestoreEntity):
     """消逝主题基础开关类."""
 
     _attr_has_entity_name = True
@@ -69,6 +70,16 @@ class XiaoshiThemeBaseSwitch(SwitchEntity):
         self.hass = hass
         self.config_entry = config_entry
         self._attr_is_on = True
+        
+    async def async_added_to_hass(self) -> None:
+        """当实体被添加到 HA 时调用."""
+        await super().async_added_to_hass()
+        
+        # 尝试恢复之前的状态
+        last_state = await self.async_get_last_state()
+        if last_state:
+            self._attr_is_on = last_state.state == "on"
+            _LOGGER.debug(f"恢复 {self.entity_id} 的状态为: {self._attr_is_on}")
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """打开开关."""
