@@ -6,7 +6,7 @@
   "codeowners": [],
   "requirements": ["astral>=2.2"],
   "config_flow": true,
-  "version": "1.4",
+  "version": "1.5",
   "iot_class": "local_polling",
   "after_dependencies": ["mobile_app"], 
   "startup_after": ["mobile_app"] 
