@@ -217,7 +217,6 @@ async def update_phone_theme_logic(hass: HomeAssistant) -> None:
             mode_number = hass.states.get(mode_number_id)
             
             if not mode_switch or not mode_number:
-                _LOGGER.error("手机主题实体不完整: %s", entry.entry_id)
                 continue
                 
             _LOGGER.debug("手机主题 %s 开关状态: %s, 当前模式: %s", 
